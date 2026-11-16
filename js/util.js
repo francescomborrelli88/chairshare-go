@@ -136,7 +136,12 @@
   function icon(n, size = 20, extra = '') {
     return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${I[n] || ''}</svg>`;
   }
-  const LOGO = '<svg viewBox="0 0 512 512" fill="none" stroke="#FFFFFF" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M190 120v170h150M190 290l-22 112M340 290l22 112M190 200h96"/></svg>';
+  // Logo identico a quello del sito (cerchio corallo + sedia)
+  const LOGO = '<svg class="logo-c" viewBox="0 0 1080 1080" aria-hidden="true"><circle cx="540" cy="540" r="540" fill="#FF385C"/><g transform="translate(0 4)"><path d="M383 232 L413 542 L683 542 M413 542 L393 802 M683 542 L698 802" fill="none" stroke="#fff" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/></g></svg>';
+  // Logo + scritta del sito + etichetta GO (proposta A)
+  function lockup(taglia) {
+    return `<span class="lockup ${taglia || ''}" role="img" aria-label="ChairShare Go">${LOGO}<span class="wm">Chair<span>Share</span></span><span class="go">GO</span></span>`;
+  }
 
   // Bottom sheet (finestra dal basso) riutilizzabile
   function sheet(titolo, html, onMount) {
@@ -195,6 +200,6 @@
   window.GO = {
     oggi, oraMinuti, addDays, giorniTra, PREAVVISI, prenotabile, testoPreavviso, giorno, giornoBreve, numero, dataLunga, dataMedia, lunediDi, dow,
     min, hhmm, ora, esc, euro, durata, iniziali, nomeBreve, waLink, mapsLink, errore, mancaNelDb,
-    toast, icon, LOGO, sheet, chiudiSheet, icsLink, installata, iOS, installa, puoInstallare, registraSW
+    toast, icon, LOGO, lockup, sheet, chiudiSheet, icsLink, installata, iOS, installa, puoInstallare, registraSW
   };
 })();

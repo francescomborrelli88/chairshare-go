@@ -121,7 +121,7 @@
     const s = servizio(), g = s ? giorni(s).slice(0, 6) : [];
     document.title = `${P.name} · Prenota con ChairShare`;
     return `<main class="view no-nav">
-      <div class="brandmini"><span class="lg">${G.LOGO}</span>Prenotazioni con ChairShare</div>
+      <div class="brandmini">${G.LOGO}Prenotazioni con ChairShare</div>
       <header class="row" style="gap:14px"><span class="avatar lg" style="width:72px;height:72px" aria-hidden="true">${esc(G.iniziali(P.name))}</span>
         <div class="stack" style="gap:3px"><h1 class="h1" style="font-size:22px">${esc(P.name)}</h1>
         ${P.reviews_count ? `<span class="small">★ ${String(P.rating).replace('.', ',')} · ${P.reviews_count} recensioni</span>` : ''}</div></header>
@@ -303,7 +303,7 @@
     } catch (e) {
       console.error(e);
       const nessuno = /NESSUN_PROFILO/.test(e.message || '');
-      root.innerHTML = `<main class="view no-nav"><div class="brandmini"><span class="lg">${G.LOGO}</span>Prenotazioni con ChairShare</div>
+      root.innerHTML = `<main class="view no-nav"><div class="brandmini">${G.LOGO}Prenotazioni con ChairShare</div>
         <div class="empty">${nessuno ? 'Questa pagina non esiste o non è più attiva.' : esc(G.errore(e))}
         <a class="btn" href="${esc(C.SITO_URL)}">Vai a ChairShare</a></div></main>`;
     }

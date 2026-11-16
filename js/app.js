@@ -44,7 +44,7 @@
     root.innerHTML = `
     <main class="view no-nav" style="justify-content:space-between">
       <div class="stack" style="gap:26px">
-        <div class="brandmark"><span class="lg">${G.LOGO}</span><span><span class="c">Chair</span>Share Go</span></div>
+        ${G.lockup('lg')}
         <div class="stack">
           <h1 class="hero-t">Lo spazio quando ti serve, l'agenda sempre gratis.</h1>
           <p class="muted">Zero commissioni sui tuoi clienti. Accedi con il tuo account ChairShare da professionista.</p>
@@ -81,7 +81,7 @@
   }
 
   function vistaSoloFreelance() {
-    root.innerHTML = `<main class="view no-nav"><div class="brandmark"><span class="lg">${G.LOGO}</span><span><span class="c">Chair</span>Share Go</span></div>
+    root.innerHTML = `<main class="view no-nav">${G.lockup('lg')}
       <div class="card"><h1 class="h2">L'agenda è per i professionisti</h1>
       <p class="muted">Il tuo account è registrato come Host. Gestisci i tuoi spazi e le prenotazioni dal sito ChairShare.</p>
       <a class="btn primary" href="${esc(C.SITO_URL)}">Vai al sito</a>
@@ -233,9 +233,9 @@
     const giorno = giornata(t);
     const domani = G.addDays(t, 1), nDomani = appDi(domani).filter(a => a.status === 'confirmed').length;
     return `
-    <header class="head"><div class="stack" style="gap:2px"><span class="sub">${esc(G.dataLunga(t))}</span>
-      <h1 class="h1">Ciao ${esc(primoNome())}</h1></div>
-      <button type="button" class="pill-btn" data-act="condividi">${ic('share', 18)}Il tuo link</button></header>
+    <div class="row between">${G.lockup()}<button type="button" class="pill-btn" data-act="condividi">${ic('share', 18)}Il tuo link</button></div>
+    <header class="stack" style="gap:2px"><span class="sub muted small">${esc(G.dataLunga(t))}</span>
+      <h1 class="h1">Ciao ${esc(primoNome())}</h1></header>
     ${bannerRichieste()}
     ${cardPrimiPassi()}
     ${p ? `<section class="card raised" aria-label="Prossimo appuntamento">

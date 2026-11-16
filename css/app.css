@@ -199,6 +199,18 @@ img { max-width: 100%; }
 .toast { position: fixed; left: 50%; bottom: calc(var(--nav-h) + 24px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; z-index: 60; background: var(--ink); color: #fff; padding: 12px 18px; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all .2s; pointer-events: none; max-width: calc(100% - 40px); text-align: center; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
+/* Logo: identico al sito + etichetta GO */
+.lockup { display: inline-flex; align-items: center; gap: 8px; }
+.lockup .logo-c { width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%; box-shadow: 0 2px 6px rgba(0, 0, 0, .12); }
+.lockup .wm { font-size: 17px; font-weight: 800; letter-spacing: -.02em; color: var(--coral); }
+.lockup .wm span { color: #1F2937; }
+.lockup .go { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; background: #1F2937; color: #fff; font-size: 11px; font-weight: 900; letter-spacing: .04em; }
+.lockup.lg { gap: 10px; }
+.lockup.lg .logo-c { width: 40px; height: 40px; }
+.lockup.lg .wm { font-size: 22px; }
+.lockup.lg .go { height: 26px; padding: 0 9px; border-radius: 8px; font-size: 14px; }
+.brandmini .logo-c { width: 20px; height: 20px; flex-shrink: 0; }
+
 /* Login / avvio */
 .brandmark { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; }
 .brandmark .lg { width: 36px; height: 36px; border-radius: 50%; background: var(--coral); display: flex; align-items: center; justify-content: center; }
