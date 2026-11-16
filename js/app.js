@@ -156,8 +156,9 @@
         m = Math.max(G.min(a.end_time), m + 60);
       } else {
         const libero = m + 60 > passato;
+        const online = b.day > G.oggi();   // per oggi i clienti non prenotano più online: puoi aggiungerlo tu
         righe += libero
-          ? `<button type="button" class="slot free" data-act="nuovo" data-block="${esc(b.id)}" data-ora="${G.hhmm(m)}"><span class="t">${G.hhmm(m)}</span><span>Libero, prenotabile online</span></button>`
+          ? `<button type="button" class="slot free" data-act="nuovo" data-block="${esc(b.id)}" data-ora="${G.hhmm(m)}"><span class="t">${G.hhmm(m)}</span><span>${online ? 'Libero, prenotabile online' : 'Libero · tocca per aggiungere'}</span></button>`
           : `<div class="slot free" style="opacity:.5;cursor:default"><span class="t">${G.hhmm(m)}</span><span>Libero</span></div>`;
         m += 60;
       }
@@ -404,7 +405,7 @@
         : '<div class="empty">Aggiungi il primo servizio: i clienti lo vedranno sulla tua pagina.</div>'}
     </section>
     <section class="stack s6" aria-label="Regole"><h2 class="h2">Regole di prenotazione</h2>
-      <div class="line-row"><span>Preavviso minimo</span><span class="muted">${C.MIN_PREAVVISO_MIN} minuti</span></div>
+      <div class="line-row"><span>Prenotazione online</span><span class="muted">${esc(C.PREAVVISO_TESTO)}</span></div>
       <div class="line-row"><span>Cancellazione gratuita</span><span class="muted">fino a 24 h prima</span></div></section>
     ${cardInstalla()}
     <div class="stack"><a class="btn" href="${esc(C.SITO_URL)}" target="_blank" rel="noopener">Vai al sito ChairShare</a>

@@ -20,6 +20,8 @@ window.GO_CONFIG = {
   // DA VERIFICARE: il sito deve leggere questi parametri (se li ignora apre la Home).
   SEARCH_URL: 'https://www.chairshare.it/?citta={citta}&data={data}',
 
-  // Anticipo minimo per prenotare (lo stesso usato dal database: 30 minuti)
-  MIN_PREAVVISO_MIN: 30
+  // Preavviso: i clienti prenotano al massimo entro il giorno prima
+  // (il freelance deve sapere chi arriva prima di andare in postazione).
+  // Il database applica la stessa regola nella funzione go_book.
+  PREAVVISO_TESTO: 'entro il giorno prima'
 };

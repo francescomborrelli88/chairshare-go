@@ -217,3 +217,25 @@ grant execute on function public.go_confirm_request(uuid, uuid, time) to authent
 
 -- 001b: la conferma delle richieste è solo per utenti con accesso
 revoke execute on function public.go_confirm_request(uuid, uuid, time) from anon;
+
+-- =====================================================================
+-- 002 (16/11): zone modificabili dal freelance + preavviso "entro il giorno prima"
+-- =====================================================================
+grant update (work_zones) on public.profiles to authenticated;
+
+create or replace function public.go_book(p_block uuid, p_service uuid, p_start time, p_name text, p_phone text)
+returns json language plpgsql security definer set search_path to 'public' as $f$
+declare res jsonb; indirizzo text; note text; zona text; giorno date; titolare uuid;
+begin
+  select day, user_id into giorno, titolare from public.chair_blocks where id = p_block;
+  if not found then raise exception 'SLOT_NON_DISPONIBILE' using errcode = 'P0001'; end if;
+  -- i clienti prenotano entro il giorno prima; il freelance può sempre aggiungere a mano
+  if auth.uid() is distinct from titolare and giorno <= (now() at time zone 'Europe/Rome')::date then
+    raise exception 'PREAVVISO_GIORNO_PRIMA' using errcode = 'P0001';
+  end if;
+  res := public.book_appointment(p_block, p_service, p_start, p_name, p_phone)::jsonb;
+  select c.address, c.access_notes, coalesce(nullif(btrim(sp.zone), ''), sp.city) into indirizzo, note, zona
+    from public.chair_blocks b join public.spaces sp on sp.id = b.space_id
+    left join public.space_contacts c on c.space_id = b.space_id where b.id = p_block;
+  return (res || jsonb_build_object('address', indirizzo, 'access_notes', note, 'zone', zona))::json;
+end; $f$;

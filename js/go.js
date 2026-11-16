@@ -73,10 +73,9 @@
   const servizio = () => P.services.find(s => s.id === st.servizio) || P.services[0];
   function liberi(b, s) {
     const out = [], dur = s.duration, t = G.oggi();
-    const limite = b.day === t ? G.oraMinuti() + C.MIN_PREAVVISO_MIN : -1;
+    if (b.day <= t) return out;           // preavviso: si prenota entro il giorno prima
     const occ = P.busy.filter(x => x.block === b.id);
     for (let m = G.min(b.start); m + dur <= G.min(b.end); m += 60) {
-      if (m < limite) continue;
       if (occ.some(o => m < G.min(o.end) && m + dur > G.min(o.start))) continue;
       out.push(G.hhmm(m));
     }

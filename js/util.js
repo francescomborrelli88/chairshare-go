@@ -71,6 +71,7 @@
     ORARIO_NON_VALIDO: 'Orario non valido.',
     FUORI_FASCIA: 'Il servizio non entra nella fascia disponibile.',
     ORARIO_PASSATO: 'Questo orario è troppo vicino o già passato.',
+    PREAVVISO_GIORNO_PRIMA: 'Si può prenotare al massimo entro il giorno prima.',
     TROPPE_PRENOTAZIONI: 'Hai già troppe prenotazioni attive con questo numero.',
     TROPPE_RICHIESTE: 'Hai già troppe richieste aperte con questo numero.',
     DATA_NON_VALIDA: 'Data non valida.',
