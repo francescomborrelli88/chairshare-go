@@ -239,3 +239,10 @@ begin
     left join public.space_contacts c on c.space_id = b.space_id where b.id = p_block;
   return (res || jsonb_build_object('address', indirizzo, 'access_notes', note, 'zone', zona))::json;
 end; $f$;
+
+-- =====================================================================
+-- 003 (16/11): preavviso scelto dal freelance (0 = giorno prima, 12, 6, 3 ore; minimo 3)
+-- Eseguito su Supabase come migrazione "chairshare_go_003_preavviso_scelto":
+-- colonna profiles.booking_notice_hours, go_book con controllo del preavviso,
+-- go_get_page che restituisce notice_hours.
+-- =====================================================================

@@ -20,7 +20,7 @@
     if (r.error) throw r.error;
     if (!r.data) throw new Error('NESSUN_PROFILO');
     const d = r.data;
-    d.zones = d.zones || []; d.block_zones = d.block_zones || {}; d.richieste = !!r.data.slug;
+    d.zones = d.zones || []; d.block_zones = d.block_zones || {}; d.richieste = !!r.data.slug; d.notice_hours = d.notice_hours || 0;
     return d;
   }
   async function prenota(blockId, serviceId, start, name, phone) {
@@ -52,7 +52,7 @@
   function demo() {
     const t = G.oggi(), d = n => G.addDays(t, n);
     return {
-      name: 'Luca Ferri', slug: 'demo', richieste: true,
+      name: 'Luca Ferri', slug: 'demo', richieste: true, notice_hours: 0,
       services: [{ id: 's1', name: 'Sessione individuale', duration: 60, price: 60 }, { id: 's2', name: 'Percorso intensivo', duration: 120, price: 110 }],
       blocks: [
         { id: 'b1', day: d(1), start: '09:00', end: '13:00', salon: 'Studio privato', city: 'Napoli' },
@@ -73,9 +73,10 @@
   const servizio = () => P.services.find(s => s.id === st.servizio) || P.services[0];
   function liberi(b, s) {
     const out = [], dur = s.duration, t = G.oggi();
-    if (b.day <= t) return out;           // preavviso: si prenota entro il giorno prima
+    if (b.day < t) return out;
     const occ = P.busy.filter(x => x.block === b.id);
     for (let m = G.min(b.start); m + dur <= G.min(b.end); m += 60) {
+      if (!G.prenotabile(b.day, m, P.notice_hours)) continue;   // preavviso scelto dal freelance
       if (occ.some(o => m < G.min(o.end) && m + dur > G.min(o.start))) continue;
       out.push(G.hhmm(m));
     }
@@ -137,7 +138,7 @@
       </section>
       ${P.reviews && P.reviews.length ? `<section class="stack" aria-label="Recensioni"><h2 class="h2" style="font-size:15px">Recensioni</h2>
         ${P.reviews.slice(0, 3).map(r => `<div class="card soft" style="gap:4px"><div class="row between small"><strong>${esc(r.name)}</strong><span>${'★'.repeat(r.rating)}</span></div>${r.comment ? `<p class="small">${esc(r.comment)}</p>` : ''}</div>`).join('')}</section>` : ''}
-      <p class="tiny muted center">I tuoi dati sono visibili solo a ${esc(P.name.split(' ')[0])}.</p>
+      <p class="tiny muted center">Prenotazioni online: ${esc(G.testoPreavviso(P.notice_hours).toLowerCase())}. I tuoi dati sono visibili solo a ${esc(P.name.split(' ')[0])}.</p>
     </main>
     ${s ? `<div class="bottom-cta"><button type="button" class="btn primary" data-act="prenota" style="min-height:52px;font-size:16px">Prenota</button></div>` : ''}`;
   }

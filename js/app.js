@@ -156,7 +156,7 @@
         m = Math.max(G.min(a.end_time), m + 60);
       } else {
         const libero = m + 60 > passato;
-        const online = b.day > G.oggi();   // per oggi i clienti non prenotano più online: puoi aggiungerlo tu
+        const online = G.prenotabile(b.day, m, S.profile.booking_notice_hours);   // oltre il preavviso: lo aggiungi tu
         righe += libero
           ? `<button type="button" class="slot free" data-act="nuovo" data-block="${esc(b.id)}" data-ora="${G.hhmm(m)}"><span class="t">${G.hhmm(m)}</span><span>${online ? 'Libero, prenotabile online' : 'Libero · tocca per aggiungere'}</span></button>`
           : `<div class="slot free" style="opacity:.5;cursor:default"><span class="t">${G.hhmm(m)}</span><span>Libero</span></div>`;
@@ -405,7 +405,10 @@
         : '<div class="empty">Aggiungi il primo servizio: i clienti lo vedranno sulla tua pagina.</div>'}
     </section>
     <section class="stack s6" aria-label="Regole"><h2 class="h2">Regole di prenotazione</h2>
-      <div class="line-row"><span>Prenotazione online</span><span class="muted">${esc(C.PREAVVISO_TESTO)}</span></div>
+      <div class="line-row" style="align-items:center"><label for="pv">Prenotazione online</label>
+        ${S.features.notice ? `<select class="input" id="pv" style="width:auto;min-height:40px;font-size:14px">${G.PREAVVISI.map(([h, t]) => `<option value="${h}" ${h === S.profile.booking_notice_hours ? 'selected' : ''}>${t}</option>`).join('')}</select>`
+          : `<span class="muted">${esc(G.testoPreavviso(0))}</span>`}</div>
+      <p class="tiny muted">I clienti vedono solo gli orari che rispettano il preavviso. Tu puoi sempre aggiungere un cliente a mano.</p>
       <div class="line-row"><span>Cancellazione gratuita</span><span class="muted">fino a 24 h prima</span></div></section>
     ${cardInstalla()}
     <div class="stack"><a class="btn" href="${esc(C.SITO_URL)}" target="_blank" rel="noopener">Vai al sito ChairShare</a>
@@ -613,6 +616,12 @@
       case 'rm-zona': { const z = S.profile.work_zones.filter((_, i) => i !== Number(el.dataset.i)); azione(() => D.setZones(z), 'Zona rimossa'); break; }
       case 'installa': G.installa().then(() => render()); break;
       case 'esci': D.logout().then(() => { S = null; vistaLogin(); }); break;
+    }
+  });
+  root.addEventListener('change', e => {
+    if (e.target.id === 'pv') {
+      const h = Number(e.target.value);
+      azione(() => D.setNotice(h), 'Preavviso: ' + G.testoPreavviso(h).toLowerCase());
     }
   });
   root.addEventListener('input', e => {

@@ -33,6 +33,8 @@
           try { st.profile.slug = ok(await sb.rpc('ensure_my_slug')); } catch (e) { /* il link resterà da creare */ }
         }
         if (!Array.isArray(st.profile.work_zones)) { st.features.zones = false; st.profile.work_zones = []; }
+        st.features.notice = typeof st.profile.booking_notice_hours === 'number';
+        if (!st.features.notice) st.profile.booking_notice_hours = 0;
 
         const [serv, blocks, appts] = await Promise.all([
           sb.from('freelance_services').select('*').eq('user_id', uid).order('created_at'),
@@ -65,6 +67,7 @@
       },
       async deleteService(id) { ok(await sb.from('freelance_services').delete().eq('id', id)); },
       async setZones(zones) { ok(await sb.from('profiles').update({ work_zones: zones }).eq('id', uid)); },
+      async setNotice(h) { ok(await sb.from('profiles').update({ booking_notice_hours: h }).eq('id', uid)); },
       async updateAppt(id, patch) { return ok(await sb.from('client_appointments').update(patch).eq('id', id).select().single()); },
       async addAppt(blockId, serviceId, start, name, phone) {
         const args = { p_block: blockId, p_service: serviceId, p_start: start, p_name: name, p_phone: phone };
@@ -98,8 +101,8 @@
       service_price: sv.price, status
     });
     const st = {
-      features: { zones: true, requests: true, events: true },
-      profile: { id: 'demo', full_name: 'Luca Ferri', role: 'guest', slug: 'demo', phone: '3330000000', work_zones: ['Vomero', 'Marano di Napoli'] },
+      features: { zones: true, requests: true, events: true, notice: true },
+      profile: { id: 'demo', full_name: 'Luca Ferri', role: 'guest', slug: 'demo', phone: '3330000000', work_zones: ['Vomero', 'Marano di Napoli'], booking_notice_hours: 0 },
       services: [s1, s2],
       blocks: [b1, b2, b3],
       appts: [
@@ -135,6 +138,7 @@
       async addService(s) { const x = { id: id(), ...s }; st.services.push(x); return x; },
       async deleteService(i) { st.services = st.services.filter(s => s.id !== i); },
       async setZones(z) { st.profile.work_zones = z; },
+      async setNotice(h) { st.profile.booking_notice_hours = h; },
       async updateAppt(i, p) { const a = st.appts.find(x => x.id === i); Object.assign(a, p); return a; },
       async addAppt(blockId, serviceId, start, name, phone) {
         const b = st.blocks.find(x => x.id === blockId); const sv = st.services.find(x => x.id === serviceId);

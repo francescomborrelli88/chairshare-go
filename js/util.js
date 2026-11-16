@@ -25,6 +25,15 @@
   function numero(s) { return parseDay(s).getUTCDate(); }
   function dataLunga(s) { const d = parseDay(s); return `${GIORNI[d.getUTCDay()]} ${d.getUTCDate()} ${MESI[d.getUTCMonth()]}`; }
   function dataMedia(s) { const d = parseDay(s); return `${GIORNI_BREVI[d.getUTCDay()]} ${d.getUTCDate()} ${MESI[d.getUTCMonth()].slice(0, 3)}`; }
+  function giorniTra(a, b) { return Math.round((parseDay(b) - parseDay(a)) / 864e5); }
+  // Preavviso: 0 = entro il giorno prima, altrimenti ore minime (minimo 3)
+  const PREAVVISI = [[0, 'Entro il giorno prima'], [12, 'Almeno 12 ore prima'], [6, 'Almeno 6 ore prima'], [3, 'Almeno 3 ore prima']];
+  function prenotabile(day, minuti, ore) {
+    const t = oggi();
+    if (!ore) return day > t;
+    return giorniTra(t, day) * 1440 + minuti - oraMinuti() >= Math.max(3, ore) * 60;
+  }
+  function testoPreavviso(ore) { const p = PREAVVISI.find(x => x[0] === (ore || 0)); return p ? p[1] : PREAVVISI[0][1]; }
   function lunediDi(s) { const n = (dow(s) + 6) % 7; return addDays(s, -n); }
 
   // 'HH:MM' <-> minuti
@@ -72,6 +81,7 @@
     FUORI_FASCIA: 'Il servizio non entra nella fascia disponibile.',
     ORARIO_PASSATO: 'Questo orario è troppo vicino o già passato.',
     PREAVVISO_GIORNO_PRIMA: 'Si può prenotare al massimo entro il giorno prima.',
+    PREAVVISO_ORE: 'Questo orario è troppo vicino: scegline uno più avanti.',
     TROPPE_PRENOTAZIONI: 'Hai già troppe prenotazioni attive con questo numero.',
     TROPPE_RICHIESTE: 'Hai già troppe richieste aperte con questo numero.',
     DATA_NON_VALIDA: 'Data non valida.',
@@ -183,7 +193,7 @@
   }
 
   window.GO = {
-    oggi, oraMinuti, addDays, giorno, giornoBreve, numero, dataLunga, dataMedia, lunediDi, dow,
+    oggi, oraMinuti, addDays, giorniTra, PREAVVISI, prenotabile, testoPreavviso, giorno, giornoBreve, numero, dataLunga, dataMedia, lunediDi, dow,
     min, hhmm, ora, esc, euro, durata, iniziali, nomeBreve, waLink, mapsLink, errore, mancaNelDb,
     toast, icon, LOGO, sheet, chiudiSheet, icsLink, installata, iOS, installa, puoInstallare, registraSW
   };

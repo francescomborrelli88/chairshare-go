@@ -1,6 +1,6 @@
 // Service worker di ChairShare Go: rende l'app installabile e apribile anche con rete debole.
 // Cambia VERSIONE a ogni pubblicazione per aggiornare i file in cache.
-const VERSIONE = 'go-v2';
+const VERSIONE = 'go-v3';
 const FILE = ['/', '/index.html', '/go.html', '/css/app.css', '/js/config.js', '/js/util.js', '/js/data.js',
   '/js/app.js', '/js/go.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/favicon.svg'];
 
