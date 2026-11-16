@@ -12,13 +12,11 @@ window.GO_CONFIG = {
   // Se resta vuoto usa l'indirizzo da cui è aperta.
   APP_URL: 'https://app.chairshare.it',
 
-  // Link per lasciare una recensione al freelance. {slug} viene sostituito.
-  // DA VERIFICARE con il sito: deve aprire la pagina recensioni già esistente.
-  REVIEW_URL: 'https://www.chairshare.it/?recensione={slug}',
+  // Link per lasciare una recensione al freelance (pagina del sito ?review=). {slug} viene sostituito.
+  REVIEW_URL: 'https://chairshare.it/?review={slug}',
 
-  // Ricerca spazi sul sito già filtrata. {citta} e {data} vengono sostituiti.
-  // DA VERIFICARE: il sito deve leggere questi parametri (se li ignora apre la Home).
-  SEARCH_URL: 'https://www.chairshare.it/?citta={citta}&data={data}',
+  // Ricerca spazi sul sito già filtrata per città o zona (il sito legge ?city=nome-in-minuscolo).
+  SEARCH_URL: 'https://chairshare.it/?city={citta}',
 
   // Il preavviso per le prenotazioni online lo sceglie ogni freelance nel Profilo
   // (entro il giorno prima, oppure almeno 12, 6 o 3 ore). Il database applica la stessa regola.

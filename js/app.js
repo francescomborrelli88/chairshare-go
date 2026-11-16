@@ -104,7 +104,10 @@
   function oreRimaste(r) { return Math.max(1, Math.round((new Date(r.expires_at).getTime() - Date.now()) / 3600e3)); }
   function linkPersonale() { return (C.APP_URL || location.origin) + '/go/' + (S.profile.slug || ''); }
   function linkRicerca(zona, day) {
-    return C.SEARCH_URL.replace('{citta}', encodeURIComponent(zona || '')).replace('{data}', encodeURIComponent(day || ''));
+    // il sito accetta solo lettere minuscole, numeri e trattini (es. marano-di-napoli)
+    const slug = String(zona || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+    return slug.length >= 2 ? C.SEARCH_URL.replace('{citta}', slug) : C.SITO_URL;
   }
   // "al Vomero", "a Marano di Napoli": i quartieri con articolo più comuni prendono "al"
   function aZona(z) {

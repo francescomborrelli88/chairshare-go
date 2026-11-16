@@ -246,3 +246,13 @@ end; $f$;
 -- colonna profiles.booking_notice_hours, go_book con controllo del preavviso,
 -- go_get_page che restituisce notice_hours.
 -- =====================================================================
+
+-- =====================================================================
+-- 004-005 (16/11): email al freelance per nuove prenotazioni e richieste
+-- Eseguito su Supabase: estensione pg_net, tabella go_notifications,
+-- funzione trigger go_notify() + trigger go_notify_appointment / go_notify_request.
+-- La funzione Edge che spedisce l'email è in supabase/functions/go-notify/index.ts
+-- e richiede il segreto RESEND_API_KEY (Edge Functions → Secrets).
+-- Per disattivare:  drop trigger go_notify_appointment on public.client_appointments;
+--                   drop trigger go_notify_request on public.appointment_requests;
+-- =====================================================================
